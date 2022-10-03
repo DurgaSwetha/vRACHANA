@@ -7,16 +7,12 @@ from .gsystem_type import *
 from .meta_type import *
 from .process_type import *
 from .group import *
-#from .author import *
+from .author import *
 #from .counter import *
 from .triple import *
 from .gattribute import *
 from .grelation import *
-from .buddy import *
 from .filehive import *
-#from .benchmark import *
-#from .history_manager import *
-from .analytics import *
 from .models_utils import *
 from .db_utils import *
 from .user import *

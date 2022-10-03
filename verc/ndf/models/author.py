@@ -1,38 +1,29 @@
+from email.policy import default
 from .base_imports import *
-from .group import *
+from .gsystem import *
 
 def _val_agency_type(val):                                                                                                                                             
         if val not in GSTUDIO_AUTHOR_AGENCY_TYPES:                                                                                                                     
                 raise ValidationError('agency_type values should be one of predefined')   
 
-class Author(Group):
+class Author(GSystem):
     """Author class to store django user instances
     """
     email=StringField()                                                                                                                                               
-    password=StringField()                                                                                                                                            
-    visited_location=ListField()                                                                                                                                       
-    preferred_languages=DictField()          # preferred languages for users like preferred lang. , fall back lang. etc.                                               
-    group_affiliation=StringField()                                                                                                                                
+    password=StringField()                                                                                                                                             
+    preferred_languages=DictField()                                                                                                                                
     language_proficiency=ListField()                                                                                                                                   
-    subject_proficiency=ListField()                                                                                                                              
-
-
-    def __init__(self, *args, **kwargs):
-        super(Author, self).__init__(*args, **kwargs)
-
-    def __eq__(self, other_user):
-        # found that otherwise millisecond differences in created_at is compared
-        try:
-            other_id = other_user['_id']
-        except (AttributeError, TypeError):
-            return False
-
-        return self['_id'] == other_id
-
+    subject_proficiency=ListField() 
+    bookmarks_list = ListField(ObjectIdField(),default=list)                                                                                                                             
+    user_type = StringField()
+    meta = {
+    'collection' : 'nodes',
+    }
+    '''
     @property
     def id(self):
         return self.name
-
+    '''
     def password_crypt(self, password):
         password_salt = str(len(password))
         crypt = hashlib.sha1(password[::-1].upper() + password_salt).hexdigest()
@@ -44,7 +35,7 @@ class Author(Group):
 
     def is_authenticated(self):
         return True
-
+    
     @staticmethod
     def get_author_by_userid(user_id):
         return node_collection.find_one({'_cls': 'GSystem.Author', 'submitted_by': user_id})
@@ -144,7 +135,7 @@ class Author(Group):
         if auth:
             return auth
 
-        auth_gst = node_collection.one({'_cls': u'GSystemType', 'name': u'Author'})
+        auth_gst = node_collection.find_one({'_cls': u'GSystemType', 'name': u'Author'})
 
         print("\n Creating new Author obj for user id (django): ", user_obj.id)
         auth = Author()
@@ -153,8 +144,6 @@ class Author(Group):
         auth.password = u""
         auth.member_of.append(auth_gst._id)
         auth.group_type = u"PUBLIC"
-        auth.edit_policy = u"NON_EDITABLE"
-        #auth.subscription_policy = u"OPEN"
         auth.submitted_by = user_obj.id
         auth.modified_by = user_obj.id
         auth.authors.append(user_obj.id)
@@ -165,17 +154,6 @@ class Author(Group):
         auth_id = ObjectId()
         auth['_id'] = auth_id
         auth.save(groupid=auth_id)
-        '''
-        home_group_obj = node_collection.find_one({'_cls': u"GSystem.Group", 'name': str("home")})
-        if user_obj.id not in home_group_obj.author_set:
-            node_collection.update({'_id': home_group_obj._id}, {'$push': {'author_set': user_obj.id }}, upsert=False, multi=False)
-            home_group_obj.reload()
-        
-        desk_group_obj = node_collection.one({'_type': u"Group", 'name': unicode("desk")})
-        if desk_group_obj and user_obj.id not in desk_group_obj.author_set:
-            node_collection.collection.update({'_id': desk_group_obj._id}, {'$push': {'author_set': user_obj.id }}, upsert=False, multi=False)
-            desk_group_obj.reload()
-        '''
         return auth
 
 

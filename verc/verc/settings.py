@@ -132,7 +132,7 @@ TIME_ZONE = 'Asia/Kolkata'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
 #LANGUAGE_COOKIE_NAME = 'language_code'
-SITE_ID = 1
+SITE_ID = 5
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -236,11 +236,12 @@ ROOT_URLCONF = 'ndf.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'verc.wsgi.application'
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR+"/templates",],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -262,6 +263,7 @@ TEMPLATES = [
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
+    #'allauth.account.auth_backends.AuthenticationBackend',
 
 ]
 
@@ -279,14 +281,29 @@ INSTALLED_APPS = (
  #   'pagination',
     #'captcha',
     'django.forms',
-    #'allauth',
-    #'allauth.account',
-    #'allauth.socialaccount',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+# the social providers
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 2  # Two days for activation.
 AUTH_USER_MODEL = 'ndf.User'
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
+
+SOCIALACCOUNT_PROVIDERS =  { 'facebook':
+                               {'METHOD': 'oauth2',
+                                'SCOPE': ['email'],
+                                'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+                                'LOCALE_FUNC': lambda request: 'en_US',
+                                'VERSION': 'v2.4'
+                               }
+                           }
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

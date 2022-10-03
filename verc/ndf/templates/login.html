@@ -1,4 +1,4 @@
- 
+ {% load socialaccount %}
  <!-- login Modal -->
  <div class="modal fade signin" id="loginModel" tabindex="-1" aria-labelledby="loginModellabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -13,22 +13,22 @@
         <!-- section  login-->
         <div class="container">
           <div class="row">
-            <div class="col text-center">
+            <div class="col text-centWork on the dumping script of ES in accordance Work on the dumping script of ES in accordance Work on the dumping script of ES in accordance with the new schema. -- In progressWork on the dumping script of ES in accordance with the new schema. -- In progressWork on the dumping script of ES in accordance Work on the dumping script of ES in accordance with the new schema. -- In progressWork on the dumping script of ES in accordance Work on the dumping script of ES in accordance with the new schema. -- In progressWork on the dumping script of ES in accordance with the new schema. -- In progressWork on the dumping script of ES in accordance with the new schema. -- In progresswith the new schema. -- In progresswith the new schema. -- In progresswith the new schema. -- In progresswith the new schema. -- In progresser">
               <h4 class="modal-body-title">Login</h4>
-              <p>Sign in with</p>
+              
             </div>
           </div>
           <div class="row">
             <div class="col">
              <ul class="nav-horizonal-links social-connect">
                <li>
-                 <a href="#" class="google-btn"><i class="fa-solid fa-g"></i></a>
+                 <a href="{% provider_login_url 'google' %}" class="google-btn"><i class="fa-solid fa-g"></i></a>
                 </li>
                 <li>
                   <a href="#" class="ln-btn"><i class="fa-brands fa-linkedin-in"></i></a>
                  </li>
                  <li>
-                  <a href="#" class="fb-btn"><i class="fa-brands fa-facebook"></i></a>
+                  <a href="{% provider_login_url 'facebook' %}" class="fb-btn"><i class="fa-brands fa-facebook"></i></a>
                  </li>
             </ul>
             </div>
@@ -60,32 +60,22 @@
           <!-- alerts here for pup up-->
           <div class="row">
             <div class="col-10 mx-auto">
-              
-              {% if error_message %}
               <div class="alerts-container">
-                <div class="alert alert-danger d-flex align-items-center" role="alert">
-                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                  <div class="alert-content">
-                  {{ error_message }}
-                  </div>
-                </div>
+                
               </div>
-              {% endif %}
             </div>
           </div>
           <!-- alert ends -->
 
           <div class="row">
             <div class="col-10 mx-auto">
-              <form id="" action="{% url 'user_login' %}" method="POST">
+              <form id="">
                 {% csrf_token %}
-                
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="hlogin_email" aria-describedby="hlogin_email">
-                  <div id="hlogin_email" class="form-text">We'll never share your email with anyone else.</div>
+                  <label for="exampleInputUsername1" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="hlogin_username" aria-describedby="hlogin_username">
+                  <div id="hlogin_email" class="form-text">We'll never share your username with anyone else.</div>
                 </div>
-                
                 <div class="">
                   <label for="loginPassword" class="form-label">Password</label>
                 </div>
@@ -99,7 +89,7 @@
                 </div>
                 
                 <div class="d-grid gap-2 col-12 mx-auto mb-5">
-                  <button type="submit" class="btn btn-lg btn-success">Login in</button>
+                  <button id="login-btn" type="button" class="btn btn-lg btn-success">Login in</button>
                   <!-- <button class="btn btn-primary" type="button">Button</button> -->
                 </div>
                 <div class="d-flex justify-content-between flex-wrap">
@@ -135,10 +125,10 @@
         <div class="row">
           <div class="col text-center">
             <h4 class="modal-body-title">Registration</h4>
-            <p>Sign in with</p>
+           
           </div>
         </div>
-        <div class="row">
+        {% comment %} <div class="row">
           <div class="col">
            <ul class="nav-horizonal-links social-connect">
              <li>
@@ -148,16 +138,16 @@
                 <a href="#" class="ln-btn"><i class="fa-brands fa-linkedin-in"></i></a>
                </li>
                <li>
-                <a href="#" class="fb-btn"><i class="fa-brands fa-facebook"></i></a>
+                <a href="{% provider_login_url 'facebook' %}" class="fb-btn"><i class="fa-brands fa-facebook"></i></a>
                </li>
           </ul>
           </div>
-        </div>
+        </div> {% endcomment %}
         <div class="row">
           <div class="col">
             <div class="seperator-section my-2">
             <hr>
-            <div class="msg">or use your email</div>
+            <div class="msg">Sign Up</div>
             </div>
 
           </div>
@@ -180,7 +170,7 @@
         <!-- alerts here for pup up-->
         <div class="row">
           <div class="col-10 mx-auto">
-            <div class="alerts-container">
+            <div class="alerts-container" id="success_div">
               
             </div>
           </div>
@@ -190,8 +180,9 @@
         <div class="row">
           <div class="col-10 mx-auto">
             <div class="row">
-              <form class="g-3" id="register_form">
+              <form class="g-3" method="post">
                 {% csrf_token %}
+                <div class="signup-data" style="color:red"></div>
                 <div class="col-md-6">
                   <label for="firstname" class="form-label">First Name <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="firstname" aria-describedby="firstname"><br>
@@ -236,6 +227,7 @@
                 <!-- ref: https://gist.github.com/aleksblago/6102782 -->
                 <div class="col-md-3">
                   <label for="selectMonth" class="form-label">Month <span class="text-danger">*</span></label>
+                 
                   <select id="selectMonth" class="form-select">
                     <option selected>Choose...</option>
                     <option value="01">January</option>
@@ -250,7 +242,7 @@
                     <option value="10">October</option>
                     <option value="11">November</option>
                     <option value="12">December</option>
-                  </select>
+                  </select> 
                 </div>
                 <div class="col-md-3">
                   <label for="selectYear" class="form-label">Year <span class="text-danger">*</span></label>
@@ -407,7 +399,7 @@
                 
                 <div class="col-12">
                   <div class="d-grid gap-2 col-6 mx-auto my-5">
-                    <button type="submit" class="btn btn-lg btn-success">Login in</button>
+                    <button  id="signup-btn" type="button" class="button btn btn-lg btn-success">Login in</button>
                     <!-- <button class="btn btn-primary" type="button">Button</button> -->
                   </div>
                 </div>
@@ -449,7 +441,8 @@
 
 {% comment %} reset password {% endcomment %}
  <!-- login Modal -->
- <div class="modal fade resetpass" id="resetmodal" tabindex="-1" aria-labelledby="loginModellabel" aria-hidden="true">
+ <!-- login Modal -->
+<div class="modal fade resetpass" id="resetmodal" tabindex="-1" aria-labelledby="loginModellabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-style--section-08">
       <div class="modal-header border-bottom-0 pb-0">
@@ -463,8 +456,10 @@
         <div class="container">
           <div class="row">
             <div class="col text-center">
-              <h4 class="modal-body-title">Reset Password</h4>
-             
+              <h4 class="modal-body-title">Forgot My Password</h4><br>
+              <br>
+              <div class="msg">Password reset instructions will be sent to the email address associated with your account.</div>
+              <br><br>
             </div>
           </div>
           
@@ -495,29 +490,21 @@
 
           <div class="row">
             <div class="col-10 mx-auto">
-              <form id="resetpassword_form">
-                 
+              <form id="" method="post">
+               {% csrf_token %}
                 <div class="">
-                  <label for="loginPassword" class="form-label">Password</label>
+                  <label for="loginPassword" class="form-label">Email <span class="text-danger">*</span></label>
                 </div>
                 <div class="input-group mb-3">
-                  <input type="password" name="password" class="form-control pr-password" data-pr-password="0" id="resetPassword" placeholder="Password" aria-label="Password" aria-describedby="toggle-password">
-                  <button class="btn btn-outline-secondary" data-toggle="#resetPassword" type="button" id="toggle-password-btn"><i class="toggle-password fas fa-eye-slash"></i></button>
-                </div>
-
-                <div class="">
-                  <label for="loginPassword2" class="form-label">Confirm Password</label>
-                </div>
-                <div class="input-group mb-3">
-                  <input type="password" class="form-control" id="resetPasswordconfirm" placeholder="Password" aria-label="Password" aria-describedby="toggle-password">
+                  <input type="text" name="resetemail" class="form-control pr-password" data-pr-password="0" id="resetemail" placeholder="Please enter an e-mail address" aria-label="Password" aria-describedby="toggle-password">
                 </div>
      
                 <div class="d-grid gap-2 col-12 mx-auto my-5">
-                  <button type="submit" class="btn btn-lg btn-success">Change Password</button>
+                  <button type="button" id="resetpasswordbtn" class="btn btn-lg btn-success">Reset Password</button>
                   <!-- <button class="btn btn-primary" type="button">Button</button> -->
                 </div>
                 <div class="d-flex justify-content-center flex-wrap">
-                  <div class="mb-3"><a href="/index">Back to Home</a></div> 
+                  <div class="mb-3"><a href="{% url 'landing_page' %}">Back to Home</a></div> 
                 </div>
                 
               </form>
@@ -529,7 +516,7 @@
       </div></div>
     </div>
   </div>
-
+ 
 <script>
 $(document).ready(function(){
   $(".tab1").click(function(){
@@ -549,3 +536,320 @@ $(document).ready(function(){
 
 });
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" 
+          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+            crossorigin="anonymous"></script>
+           
+            <script type="text/javascript">
+
+              $(document).ready(function(){
+                $('#signup-btn').click(function(){
+                    console.log('hi-signup')
+                    checkvalidation();   
+                     var validData = checkvalidation();
+                      if (validData.isperfect===false) {
+                      var html_alert_content = `<div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div class="alert-content">`
+                          +validData.info+
+                        `</div>
+                      </div>;`
+                    $('.alerts-container').html(html_alert_content);
+                
+                    }
+                    else{
+
+                      var html_alert_content = `<div class="alert alert-success d-flex align-items-center" role="alert">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div class="alert-content">
+                            Registered Successfully.
+                          </div>
+                        </div>`;
+                      $('.alerts-container').html(html_alert_content);
+                      window.setTimeout(function() {
+                          $(".alert-success").fadeTo(800, 0).slideUp(800, function(){
+                              $(this).remove(); 
+                          });       
+                        }, 2000);
+                    }
+                     
+                
+                      $.ajax({
+                              method:'post',
+                              url:'{% url "custom_register" %}',
+                                data: {
+                                    firstname :$('#firstname').val(),
+                                    lastname :$('#lastname').val(),
+                                    username :$('#username').val(),
+                                    useremail :$('#useremail').val(),
+                                    password :$('#resgisterPassword').val(),
+                                    repassword :$('#registerPasswordconfirm').val(),
+                                    role :$('#selectRole').val(),
+                                    month :$('#selectMonth').val(),
+                                    year :$('#selectYear').val(),
+                                    subscrptn :$('#Subscribecheck').val(),
+                                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                
+                                },
+                                success: function(res) {
+                                  var html_alert_content = `<div class="alert alert-success d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div class="alert-content">
+                          Successfully Form Submitted.
+                        </div>
+                      </div>`;          
+                                    },
+                            })
+                        
+                      function checkvalidation() {
+                               var isperfect = true;
+                               var info ="";
+                               var objdata ={isperfect:"", info:""};
+                               
+                       //check field validations here
+                       //firstname
+                         var person_name = $("#firstname").val();
+                          if (person_name === '') {
+                                       info += "Please enter your first name<br>";
+                                       isperfect = false;
+                               }
+                         
+                         //lastname
+                          var last_name = $('#lastname').val();
+                               if (last_name === '') {
+                                       info += "Please enter your last name<br>";
+                                       isperfect = false;
+                         }
+                        
+                         
+                         //email
+                          var user_email = $("#useremail").val();
+                          if (user_email === '') {
+                                       info += "Please Enter your email address<br>";
+                                       isperfect = false;
+                               }
+                         
+                   
+                       
+                         //username 
+                          var username = $("#username").val();
+                          if (username === '') {
+                           info += "Please Enter your Username<br>";
+                           isperfect = false;
+                         }
+                         else if (username.match(/^([$&+,:;=?@#|'<>.-^*()%!])+$/)) {
+                           info += "Please enter A-Z.<br>";
+                           isperfect = false;
+                         }
+                   
+                   
+                          //password check
+                          //var password_1 = $("#resgisterPassword").val();
+                        // var password_2 = $("#resgisterPasswordconfirm").val();
+                        //  if ($('.pr-password').attr('data-pr-password') != '1'){
+                         //   info += "Password Validation failed<br>";
+                         //  isperfect = false;
+                        // }
+                        // else if (password_1 != password_2) {
+                         //  info += "Confirm password didn't Match.<br>";
+                         //  isperfect = false;
+                        // } 
+                   
+                   
+                         //selectbox role
+                         var select_role = document.getElementById("selectRole");
+                         if (select_role.selectedIndex <=0) {
+                               info += "Please Select Valid Role<br>";
+                               isperfect = false;
+                         }
+                   
+                   
+                          //selectbox month
+                         var select_month = document.getElementById("selectMonth");
+                         if (select_month.selectedIndex <=0) {
+                               info += "Please Select Valid Month<br>";
+                               isperfect = false;
+                         }
+                   
+                   
+                          //selectbox year
+                         var select_year = document.getElementById("selectYear");
+                         if (select_year.selectedIndex <=0) {
+                               info += "Please Select Valid Year<br>";
+                               isperfect = false;
+                         }
+                   
+                   
+                         //privacy policy checkbox
+                         var policy_check = document.getElementById("Policycheck");
+                         if (policy_check.checked == false) {
+                          // alert("checked") ;
+                               info += "Please Check the Privacy Policy filed filed<br>";
+                               isperfect = false;
+                         }
+                         //subscribe checkbox
+                         // var subscribe_check = document.getElementById("Subscribecheck");
+                         // if (subscribe_check.checked == false) {
+                         //       info += "Check the filed<br>";
+                         //       isperfect = false;
+                         // }
+                   
+                   
+                   
+                            //check field validation ends
+                               
+                            objdata.isperfect = isperfect;
+                            objdata.info = info;
+                            //checkvalidation function ends
+                            
+                            return objdata;
+                          }
+                })
+            
+                      $('#login-btn').click(function(){
+                        var validData = checkvalidation_login();
+
+                        if (validData.isperfect===false) {
+                        var html_alert_content = `<div class="alert alert-danger d-flex align-items-center" role="alert">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div class="alert-content">
+                            `+validData.info+`
+                          </div>
+                        </div>`;
+                        $('.alerts-container').html(html_alert_content);
+                        }
+                        else{
+                        var html_alert_content = `<div class="alert alert-success d-flex align-items-center" role="alert">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div class="alert-content">
+                            Login Successfully.
+                          </div>
+                        </div>`;
+                        $('.alerts-container').html(html_alert_content);
+                        window.setTimeout(function() {
+                          $(".alert-success").fadeTo(800, 0).slideUp(800, function(){
+                              $(this).remove(); 
+                          });       
+                        }, 2000);
+                        }
+                        
+                        
+                        console.log('hi-signin')
+
+                        $.ajax({
+                          method:'post',
+                          url:'{% url "custom_login" %}',
+                            data: {
+                                username :$('#hlogin_username').val(),
+                                password :$('#hloginPassword').val(),
+                                csrfmiddlewaretoken: "{{ csrf_token }}",
+            
+                            },
+                          
+                            success: function(res) {
+                            },
+                            
+                        })
+
+                        function checkvalidation_login() {
+                              var isperfect = true;
+                              var info ="";
+                              var objdata ={isperfect:"", info:""};
+                              
+                              //check field validations here
+                                //email
+                                var hlogin_username = $("#hlogin_username").val();
+                                if (hlogin_username === '') {
+                                              info += "Please enter your username<br>";
+                                              isperfect = false;
+                                      }
+                          
+                              //password check
+                              var hlogin_pass = $("#hloginPassword").val();
+                                if (hlogin_pass === '') {
+                                              info += "Please Enter your Password<br>";
+                                              isperfect = false;
+                                }
+                                    
+                                
+                              
+                        
+                                //check field validation ends
+                                    
+                                objdata.isperfect = isperfect;
+                                objdata.info = info;
+                                //checkvalidation function ends
+                                
+                                return objdata;
+                              }
+                      }) 
+
+                      $('#resetpasswordbtn').click(function(){
+       
+                          
+                        var validData = checkvalidation_pwrdreset();
+                        if (validData.isperfect===false) {
+                          var html_alert_content = `<div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <div class="alert-content">
+                              `+validData.info+`
+                            </div>
+                          </div>`;
+                          $('.alerts-container').html(html_alert_content);
+                          return;
+                          }
+                          else{
+                          var html_alert_content = `<div class="alert alert-success d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <div class="alert-content">
+                              Password reset instructions will be sent to the email address associated with your account.
+                            </div>
+                          </div>`;
+                        $('.alerts-container').html(html_alert_content);
+                        window.setTimeout(function() {
+                        $(".alert-success").fadeTo(800, 0).slideUp(800, function(){
+                        $(this).remove(); 
+                        });
+                        }, 8000);
+
+                        }
+
+                        console.log('hi-pwrdreset')
+            
+                        $.ajax({
+                          method:'post',
+                          url:'{% url "password_reset" %}',
+                            data: {
+                              resetemail :$('#resetemail').val(),
+                              csrfmiddlewaretoken: "{{ csrf_token }}",
+                            },
+                            success: function(res) {
+                                    
+                                           },
+                          })
+                        function checkvalidation_pwrdreset() {
+                          var isperfect = true;
+                          var info ="";
+                          var objdata ={isperfect:"", info:""};
+                          
+                      
+                          var user_email = $("#resetemail").val();
+                          var emailformat = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                          if (user_email === '') {
+                                      info += "Please Enter your email address<br>";
+                                      isperfect = false;
+                              }
+
+                              else if(!emailformat.test(user_email)){
+                                info += "Please Enter a valid email address<br>";
+                                isperfect = false;
+                              }
+                          objdata.isperfect = isperfect;
+                          objdata.info = info;
+                          return objdata;
+                        }   
+
+                      })
+                    })
+                
+    </script>                                    

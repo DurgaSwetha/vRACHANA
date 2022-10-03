@@ -9,7 +9,7 @@ from django.views.static import serve
 from ndf.forms import *
 from verc.settings import GSTUDIO_SITE_NAME, GSTUDIO_OER_GROUPS
 from ndf.views.home import homepage, landing_page
-
+from ndf.views.dashboard import userprofile, change_password
 login_template = 'login.html'
 #logout_template = "landidjango.template.exceptidjango.template.exceptidjango.template.exceptions.TemplateDoesNotExist: registration/login.htmlons.TemplateDoesNotExist: registration/login.htmlons.TemplateDoesNotExist: registration/login.htmlng_page_clix_oer.html"
 
@@ -26,24 +26,33 @@ if settings.DEBUG:
 #from ndf.views.es_queries import *
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
+from django.views.generic.base import TemplateView
 from django.contrib import admin
+from ndf.views.ajax_views import activate,pwrd_reset
 urlpatterns += [
-                        #url(r'^captcha/', include('captcha.urls')),
-                        #url(r'^', include('ndf.urls.captcha')), 
-                        url(r'^$', homepage, {"group_id": "home"}, name="homepage"),
-                        #url(r'^$', homepage, {"group_id": "home"}, name="homepage"),
-                        #url(r'^test-delete/$', test_delete, name='test_delete'),
-                        #url(r'^test-session/$', test_session, name='test_session'),
+                        url(r'^$', homepage, {"group_id": "verc-home"}, name="homepage"),
+                        url(r'^welcome/$', landing_page,  name="landing_page"),
+                        
                         url(r'^i18n/', include('django.conf.urls.i18n')),
-                        #url(r'^status/cache/$', cache_status),
+                        
                         # gstudio admin url's
                         url(r'^admin/', admin.site.urls),
                         url('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('ndf/images/favicon/favicon.ico'))),
 
                         #ajax URLS
                         url(r'^/ajax/', include('ndf.urls.ajax_urls')),
-                        url('accounts/', include('django.contrib.auth.urls')),
-                        #url(r'^(?P<groupid>[^/]+)/e-library', include('ndf.urls.e-library')),
-                        #url(r'^(?P<group_id>[^/]+)/?$', homepage, name="homepage1"),
-                        
+                        url(r'myDashboard/profile', userprofile, name='user_profile'),
+                        url(r'myDashboard/change_password', change_password, name='change_password'),
+                        url("accounts/activate/complete/",TemplateView.as_view(
+                            template_name="activation_complete.html"),
+                                name="activation_complete",
+                            ),
+                        url(
+                            "accounts/activate/(?P<activation_key>[^/]+)/",
+                            activate,
+                            name="custom_activate",
+                        ),
+                        #url("^accounts/login/$", login, name ='login'),
+                        url("accounts/", include('allauth.urls')),
+
 ]

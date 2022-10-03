@@ -94,7 +94,8 @@
     <script src="{% static 'js/pages/_partials/filter_view_layouts.js' %}"></script>
     <script src="{% static 'js/pages/_partials/filter_tree.js' %}"></script>
     <script src="{% static 'js/pages/_partials/sliding-sidebar.js' %}"></script>
-    
+    <input type="hidden" name="csrf_token" class="csrf_token" value="{{csrf_token}}">
+
 
     <script>
       $(document).ready(function(){

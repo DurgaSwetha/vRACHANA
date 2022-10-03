@@ -187,7 +187,6 @@ class Group(GSystem):
                         request=None,
                         group_type=None,
                         edit_policy=None,
-                        subscription_policy=None,
                         visibility_policy=None,
                         disclosure_policy=None,
                         encryption_policy=None,

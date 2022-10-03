@@ -37,6 +37,8 @@ class Node(DynamicDocument):
         'collection' : 'nodes',
         'allow_inheritance' : True,
         'abstract' : True,
+        'use_dot_notation' : True
+
         }
     """
         'indexes' : [
